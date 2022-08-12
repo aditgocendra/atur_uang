@@ -60,10 +60,14 @@ class _HomePageState extends State<HomePage> {
 
           alphaColorAppBar = alpha.toInt();
         });
-        print(
-            'scroll : ${scrollController.position.pixels} -- alpha : $alphaColorAppBar');
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 }

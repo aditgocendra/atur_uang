@@ -1,3 +1,4 @@
+import 'package:atur_uang/pages/money_in/money_in_page.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalMenu extends StatelessWidget {
@@ -11,27 +12,35 @@ class HorizontalMenu extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color.fromARGB(255, 205, 205, 205),
+            child: GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MoneyInPage(),
                 ),
-                borderRadius: BorderRadius.circular(10.0),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/icons/icon_plus.png',
-                    ),
-                    const Text(
-                      'Uang Masuk',
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 205, 205, 205),
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/icons/icon_plus.png',
+                      ),
+                      const Text(
+                        'Uang Masuk',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 12),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

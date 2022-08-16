@@ -1,9 +1,11 @@
+import 'package:atur_uang/pages/home/widget/form_register.dart';
 import 'package:atur_uang/pages/home/widget/history.dart';
 import 'package:atur_uang/pages/home/widget/history_header.dart';
 import 'package:atur_uang/pages/home/widget/horizontal_menu.dart';
 import 'package:atur_uang/pages/home/widget/money_banner.dart';
 import 'package:atur_uang/pages/home/widget/app_bar_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -18,30 +20,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var boxUser = Hive.box('user_data');
+    print(boxUser.length);
     return Scaffold(
-      body: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Color.fromARGB(alphaColorAppBar, 255, 255, 255),
-            elevation: 0.5,
-            pinned: true,
-            title: const AppBarCustom(),
-          ),
-          const SliverToBoxAdapter(
-            child: MoneyBanner(),
-          ),
-          const SliverToBoxAdapter(
-            child: HorizontalMenu(),
-          ),
-          const SliverToBoxAdapter(
-            child: HistoryHeader(),
-          ),
-          const SliverToBoxAdapter(
-            child: History(),
-          )
-        ],
-      ),
+      body: boxUser.length > 0
+          ? CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor:
+                      Color.fromARGB(alphaColorAppBar, 255, 255, 255),
+                  elevation: 0.5,
+                  pinned: true,
+                  title: AppBarCustom(name: boxUser.getAt(0).username),
+                ),
+                const SliverToBoxAdapter(
+                  child: MoneyBanner(),
+                ),
+                const SliverToBoxAdapter(
+                  child: HorizontalMenu(),
+                ),
+                const SliverToBoxAdapter(
+                  child: HistoryHeader(),
+                ),
+                const SliverToBoxAdapter(
+                  child: History(),
+                )
+              ],
+            )
+          : const FormRegister(),
     );
   }
 

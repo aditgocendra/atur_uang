@@ -1,7 +1,9 @@
+import 'package:atur_uang/model/money.dart';
+import 'package:atur_uang/model/user_data.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 class MoneyInPage extends StatefulWidget {
@@ -12,7 +14,9 @@ class MoneyInPage extends StatefulWidget {
 }
 
 class _MoneyInPageState extends State<MoneyInPage> {
-  TextEditingController selectDayTec = TextEditingController();
+  late TextEditingController selectDayTec;
+  late TextEditingController totalMoneyInTec;
+  late TextEditingController descTec;
 
   var configDatePicker = CalendarDatePicker2WithActionButtonsConfig(
     calendarType: CalendarDatePicker2Type.single,
@@ -23,6 +27,61 @@ class _MoneyInPageState extends State<MoneyInPage> {
   List<DateTime?> singleDatePickerValueWithDefaultValue = [
     DateTime.now(),
   ];
+
+  Future saveMoneyIn() async {
+    String selectedDay;
+    int totalMoney;
+    String desc;
+
+    // Validation Form
+    if (selectDayTec.text.isEmpty) {
+      snackbarMessage('Tanggal belum dipilih');
+      return;
+    }
+
+    if (totalMoneyInTec.text.isEmpty) {
+      snackbarMessage('Jumlah uang masih kosong');
+      return;
+    }
+
+    if (descTec.text.isEmpty) {
+      desc = '-';
+    } else {
+      desc = descTec.text;
+    }
+
+    selectedDay = selectDayTec.text;
+    totalMoney = int.parse(totalMoneyInTec.text);
+
+    var boxMoney = await Hive.openBox('money');
+    var money = MoneyModel('Uang Masuk', selectedDay, totalMoney, desc);
+
+    await boxMoney.add(money);
+
+    // update data user
+    var boxUser = await Hive.openBox('user_data');
+    UserData userData = boxUser.getAt(0);
+    await boxUser.putAt(
+      0,
+      UserData(userData.username, userData.myMoney + totalMoney),
+    );
+
+    Navigator.pop(context);
+  }
+
+  void snackbarMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {
+            // Code to execute.
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +104,9 @@ class _MoneyInPageState extends State<MoneyInPage> {
         child: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              saveMoneyIn();
+            },
             style: ElevatedButton.styleFrom(
               primary: const Color.fromARGB(255, 108, 99, 255),
               shape: const StadiumBorder(),
@@ -82,7 +143,7 @@ class _MoneyInPageState extends State<MoneyInPage> {
                               width: 1,
                               color: Color.fromARGB(255, 108, 99, 255)),
                         ),
-                        hintText: 'Minggu, 27 Mei 2022',
+                        hintText: 'Tanggal',
                       ),
                     ),
                   ),
@@ -112,8 +173,6 @@ class _MoneyInPageState extends State<MoneyInPage> {
                         return;
                       }
 
-                      initializeDateFormatting();
-
                       setState(() {
                         selectDayTec.text = DateFormat('EEEE, d MMM y', 'id')
                             .format(datePick[0]!);
@@ -130,6 +189,7 @@ class _MoneyInPageState extends State<MoneyInPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
+                controller: totalMoneyInTec,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 keyboardType: TextInputType.number,
                 cursorColor: const Color.fromARGB(255, 108, 99, 255),
@@ -148,15 +208,16 @@ class _MoneyInPageState extends State<MoneyInPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
+                controller: descTec,
                 minLines: 6,
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
-                cursorColor: Color.fromARGB(255, 108, 99, 255),
-                style: TextStyle(fontSize: 14),
-                decoration: InputDecoration(
+                cursorColor: const Color.fromARGB(255, 108, 99, 255),
+                style: const TextStyle(fontSize: 14),
+                decoration: const InputDecoration(
                   contentPadding: EdgeInsets.all(12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
@@ -176,5 +237,28 @@ class _MoneyInPageState extends State<MoneyInPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    selectDayTec = TextEditingController();
+    totalMoneyInTec = TextEditingController();
+    descTec = TextEditingController();
+
+    String dateNow = DateFormat('EEEE, d MMM y', 'id').format(DateTime.now());
+
+    setState(() {
+      selectDayTec.text = dateNow;
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    selectDayTec.dispose();
+    totalMoneyInTec.dispose();
+    descTec.dispose();
+    super.dispose();
   }
 }

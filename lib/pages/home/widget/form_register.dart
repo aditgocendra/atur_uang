@@ -1,3 +1,4 @@
+import 'package:atur_uang/globals/global_style.dart';
 import 'package:atur_uang/model/money.dart';
 import 'package:atur_uang/model/user_data.dart';
 import 'package:atur_uang/pages/home/home_page.dart';
@@ -62,73 +63,94 @@ class _FormRegisterState extends State<FormRegister> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(12.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: TextField(
-              controller: nameTec,
-              cursorColor: const Color.fromARGB(255, 108, 99, 255),
-              style: const TextStyle(fontSize: 14),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(12.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide(
-                      width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                ),
-                hintText: 'Nama Anda',
-              ),
-            ),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            width: 150,
+            height: 150,
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 108, 99, 255),
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(160))),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: TextField(
-              controller: moneyTec,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
-              cursorColor: const Color.fromARGB(255, 108, 99, 255),
-              style: const TextStyle(fontSize: 14),
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.all(12.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide(
-                      width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                ),
-                hintText: 'Jumlah Uang Anda Sekarang',
-              ),
-            ),
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Container(
+            width: 140,
+            height: 140,
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 108, 99, 255),
+                borderRadius:
+                    BorderRadius.only(topRight: Radius.circular(140))),
           ),
-          ElevatedButton(
-            onPressed: () {
-              saveUserData(context);
-            },
-            style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 108, 99, 255),
-              minimumSize: const Size.fromHeight(45),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Image.asset(
+                  'assets/images/art/art_image.png',
+                  width: 200,
                 ),
               ),
-            ),
-            child: const Text(
-              'Simpan',
-              style: TextStyle(fontSize: 14),
-            ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextField(
+                    controller: nameTec,
+                    cursorColor: const Color.fromARGB(255, 108, 99, 255),
+                    style: const TextStyle(fontSize: 14),
+                    decoration: GlobalStyle.textFieldDecoration('Nama Anda')),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextField(
+                  controller: moneyTec,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  cursorColor: const Color.fromARGB(255, 108, 99, 255),
+                  style: const TextStyle(fontSize: 14),
+                  decoration: GlobalStyle.textFieldDecoration(
+                      'Jumlah Uang Anda Sekarang'),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  saveUserData(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 108, 99, 255),
+                  minimumSize: const Size.fromHeight(45),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                ),
+                child: const Text(
+                  'Simpan',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    nameTec.dispose();
+    moneyTec.dispose();
+    super.dispose();
   }
 }

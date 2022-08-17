@@ -33,31 +33,9 @@ class HorizontalMenu extends StatelessWidget {
                       builder: (context) => MoneyInPage(),
                     ),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 205, 205, 205),
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.moneyCheck,
-                            size: 40,
-                            color: Color.fromARGB(255, 108, 99, 255),
-                          ),
-                          Text(
-                            'Uang Masuk',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
+                  child: Menu(
+                    icon: FontAwesomeIcons.moneyCheck,
+                    titleMenu: 'Uang Masuk',
                   ),
                 ),
               ),
@@ -72,31 +50,9 @@ class HorizontalMenu extends StatelessWidget {
                       builder: (context) => MoneyOutPage(),
                     ),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 205, 205, 205),
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.handsHolding,
-                            size: 40,
-                            color: Color.fromARGB(255, 108, 99, 255),
-                          ),
-                          Text(
-                            'Uang Keluar',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
+                  child: Menu(
+                    icon: FontAwesomeIcons.handsHolding,
+                    titleMenu: 'Uang Keluar',
                   ),
                 ),
               ),
@@ -134,31 +90,9 @@ class HorizontalMenu extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 205, 205, 205),
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.recycle,
-                            size: 40,
-                            color: Color.fromARGB(255, 108, 99, 255),
-                          ),
-                          Text(
-                            'Atur Ulang',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
+                  child: Menu(
+                    icon: FontAwesomeIcons.recycle,
+                    titleMenu: 'Atur Ulang',
                   ),
                 ),
               ),
@@ -173,37 +107,52 @@ class HorizontalMenu extends StatelessWidget {
                       builder: (context) => Report(),
                     ),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 205, 205, 205),
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.moneyBillTransfer,
-                            size: 40,
-                            color: Color.fromARGB(255, 108, 99, 255),
-                          ),
-                          Text(
-                            'Laporan Keuangan',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ),
+                  child: Menu(
+                    icon: FontAwesomeIcons.moneyBillTransfer,
+                    titleMenu: 'Laporan Keuangan',
                   ),
                 ),
               ),
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class Menu extends StatelessWidget {
+  IconData icon;
+  String titleMenu;
+
+  Menu({Key? key, required this.icon, required this.titleMenu})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color.fromARGB(255, 205, 205, 205),
+        ),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 40,
+              color: const Color.fromARGB(255, 108, 99, 255),
+            ),
+            Text(
+              titleMenu,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
       ),
     );
   }

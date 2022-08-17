@@ -21,5 +21,3 @@ class BannerImage extends StatelessWidget {
     );
   }
 }
-
-// constraints.maxWidth / 3 + 30

@@ -6,12 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var appDocDir = await path_provider.getApplicationDocumentsDirectory();
 
-  Hive.init(appDocDir.path);
+  if (!kIsWeb) {
+    var appDocDir = await path_provider.getApplicationDocumentsDirectory();
+    Hive.init(appDocDir.path);
+  }
+
   initializeDateFormatting();
 
   Hive.registerAdapter(MoneyModelAdapter());

@@ -1,3 +1,5 @@
+import 'package:atur_uang/globals/global_function.dart';
+import 'package:atur_uang/globals/global_style.dart';
 import 'package:atur_uang/model/money.dart';
 import 'package:atur_uang/model/user_data.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -35,12 +37,12 @@ class _MoneyInPageState extends State<MoneyInPage> {
 
     // Validation Form
     if (selectDayTec.text.isEmpty) {
-      snackbarMessage('Tanggal belum dipilih');
+      GlobalFunction.snackbarMessage(context, 'Tanggal belum dipilih');
       return;
     }
 
     if (totalMoneyInTec.text.isEmpty) {
-      snackbarMessage('Jumlah uang masih kosong');
+      GlobalFunction.snackbarMessage(context, 'Jumlah uang masih kosong');
       return;
     }
 
@@ -67,20 +69,6 @@ class _MoneyInPageState extends State<MoneyInPage> {
     );
 
     Navigator.pop(context);
-  }
-
-  void snackbarMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: SnackBarAction(
-          label: 'Ok',
-          onPressed: () {
-            // Code to execute.
-          },
-        ),
-      ),
-    );
   }
 
   @override
@@ -132,19 +120,8 @@ class _MoneyInPageState extends State<MoneyInPage> {
                       controller: selectDayTec,
                       readOnly: true,
                       style: const TextStyle(fontSize: 14),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(12.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide: BorderSide(
-                              width: 1,
-                              color: Color.fromARGB(255, 108, 99, 255)),
-                        ),
-                        hintText: 'Tanggal',
-                      ),
+                      decoration:
+                          GlobalStyle.textFieldDecoration('Hari / Tanggal'),
                     ),
                   ),
                 ),
@@ -194,18 +171,7 @@ class _MoneyInPageState extends State<MoneyInPage> {
                 keyboardType: TextInputType.number,
                 cursorColor: const Color.fromARGB(255, 108, 99, 255),
                 style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(
-                        width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                  ),
-                  hintText: 'Jumlah Uang',
-                ),
+                decoration: GlobalStyle.textFieldDecoration('Jumlah Uang'),
               ),
             ),
             Padding(
@@ -217,20 +183,8 @@ class _MoneyInPageState extends State<MoneyInPage> {
                 keyboardType: TextInputType.multiline,
                 cursorColor: const Color.fromARGB(255, 108, 99, 255),
                 style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(
-                        width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                  ),
-                  hintText: 'Keterangan (Optional)',
-                ),
+                decoration:
+                    GlobalStyle.textFieldDecoration('Keterangan (Optional)'),
               ),
             ),
           ],

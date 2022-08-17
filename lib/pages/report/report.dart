@@ -1,5 +1,7 @@
-import 'dart:io';
-import 'dart:typed_data';
+// import 'dart:convert';
+// import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:atur_uang/globals/global_function.dart';
+import 'package:atur_uang/globals/global_style.dart';
 import 'package:atur_uang/model/money.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,11 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'package:atur_uang/globals/pdf_generate_web.dart'
+    if (dart.library.io) 'package:atur_uang/globals/pdf_generate_android.dart'
+    as generator_pdf;
 
 class Report extends StatefulWidget {
   const Report({Key? key}) : super(key: key);
@@ -125,21 +132,8 @@ class _ReportState extends State<Report> {
                             cursorColor:
                                 const Color.fromARGB(255, 108, 99, 255),
                             style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(12.0),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: Color.fromARGB(255, 108, 99, 255)),
-                              ),
-                              hintText: 'Tahun',
-                            ),
+                            decoration:
+                                GlobalStyle.textFieldDecoration('Tahun'),
                           ),
                         ),
                         DropdownSearch<String>(
@@ -318,12 +312,13 @@ class _ReportState extends State<Report> {
                   },
                 ),
               );
+              generator_pdf.generatePdf(pdf);
 
-              Directory dir = Directory('/storage/emulated/0/Download');
-
-              final file = File("${dir.path}/laporan-keuangan.pdf");
-              await file.writeAsBytes(await pdf.save());
-              print('success');
+              if (!kIsWeb) {
+                // ignore: use_build_context_synchronously
+                GlobalFunction.snackbarMessage(context,
+                    'Laporan berhasil dibuat silahkan cek di folder unduhan');
+              }
             },
             style: ElevatedButton.styleFrom(
               primary: const Color.fromARGB(255, 108, 99, 255),

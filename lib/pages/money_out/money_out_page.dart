@@ -1,3 +1,5 @@
+import 'package:atur_uang/globals/global_function.dart';
+import 'package:atur_uang/globals/global_style.dart';
 import 'package:atur_uang/model/money.dart';
 import 'package:atur_uang/model/user_data.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -29,20 +31,6 @@ class _MoneyOutPageState extends State<MoneyOutPage> {
     DateTime.now(),
   ];
 
-  void snackbarMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: SnackBarAction(
-          label: 'Ok',
-          onPressed: () {
-            // Code to execute.
-          },
-        ),
-      ),
-    );
-  }
-
   Future saveMoneyOut() async {
     String selectedDay;
     int totalMoney;
@@ -50,12 +38,12 @@ class _MoneyOutPageState extends State<MoneyOutPage> {
 
     // Validation Form
     if (selectDayTec.text.isEmpty) {
-      snackbarMessage('Tanggal belum dipilih');
+      GlobalFunction.snackbarMessage(context, 'Tanggal belum dipilih');
       return;
     }
 
     if (totalMoneyInTec.text.isEmpty) {
-      snackbarMessage('Jumlah uang masih kosong');
+      GlobalFunction.snackbarMessage(context, 'Jumlah uang masih kosong');
       return;
     }
 
@@ -77,7 +65,8 @@ class _MoneyOutPageState extends State<MoneyOutPage> {
     UserData userData = boxUser.getAt(0);
 
     if (userData.myMoney - totalMoney < 0) {
-      snackbarMessage('Total jumlah uang anda kurang dari 0');
+      GlobalFunction.snackbarMessage(
+          context, 'Total jumlah uang anda kurang dari 0');
       return;
     }
     await boxUser.putAt(
@@ -138,19 +127,8 @@ class _MoneyOutPageState extends State<MoneyOutPage> {
                       controller: selectDayTec,
                       readOnly: true,
                       style: const TextStyle(fontSize: 14),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(12.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide: BorderSide(
-                              width: 1,
-                              color: Color.fromARGB(255, 108, 99, 255)),
-                        ),
-                        hintText: 'Minggu, 27 Mei 2022',
-                      ),
+                      decoration:
+                          GlobalStyle.textFieldDecoration('Hari / Tanggal'),
                     ),
                   ),
                 ),
@@ -197,49 +175,24 @@ class _MoneyOutPageState extends State<MoneyOutPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                controller: totalMoneyInTec,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                cursorColor: const Color.fromARGB(255, 108, 99, 255),
-                style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(
-                        width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                  ),
-                  hintText: 'Jumlah Uang',
-                ),
-              ),
+                  controller: totalMoneyInTec,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  cursorColor: const Color.fromARGB(255, 108, 99, 255),
+                  style: const TextStyle(fontSize: 14),
+                  decoration: GlobalStyle.textFieldDecoration('Jumlah Uang')),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: TextField(
-                controller: descTec,
-                minLines: 6,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                cursorColor: const Color.fromARGB(255, 108, 99, 255),
-                style: const TextStyle(fontSize: 14),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                    borderSide: BorderSide(
-                        width: 1, color: Color.fromARGB(255, 108, 99, 255)),
-                  ),
-                  hintText: 'Keterangan (Optional)',
-                ),
-              ),
+                  controller: descTec,
+                  minLines: 6,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  cursorColor: const Color.fromARGB(255, 108, 99, 255),
+                  style: const TextStyle(fontSize: 14),
+                  decoration:
+                      GlobalStyle.textFieldDecoration('Keterangan (Optional)')),
             ),
           ],
         ),
